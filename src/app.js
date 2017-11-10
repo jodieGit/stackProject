@@ -1,2 +1,2 @@
-import {printColor} from './printColor';
-printColor();
+import {pintColor} from './printColor.js';
+pintColor();

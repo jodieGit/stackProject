@@ -4,6 +4,7 @@
     * n: 更新当前node版本，无则全局安装一下
     * --save-dev === -D
     * install === -i
+    * mac: sudo 
 
 
 ## 2017-11-08
