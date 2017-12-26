@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>force2</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="d3.js"></script>
+  </head>
+  <script type="text/javascript">
+    window.onload = function () {
+      let cityData = [
+        {name: '安徽省', citys: ['合肥', '池州', '黄山', '芜湖']},
+        {name: '江苏省', citys: ['南京', '苏州', '无锡', '镇江']},
+        {name: '上海', citys: ['长宁', '闵行', '浦东', '浦西']}
+      ];
+
+      let nodes = [];
+      let links = [];
+      let cObj = document.getElementById('c1');
+      let cCxt = cObj.getContext('2d');
+
+      nodes.push({name: '中国'});
+      cityData.forEach(item => {
+        nodes.push({name: item.name});
+        links.push({source: '中国', target: item.name, value: 10});
+        item.citys.forEach(city => {
+          nodes.push({name: city});
+          links.push({source: item.name, target: city, value: 20});
+        });
+      });
+
+      let sim = d3.forceSimulation()
+        .nodes(nodes)
+        .force('link', d3.forceLink(links).id(item=>item.name).distance(item=>item.value))
+        .force('charge', d3.forceManyBody())
+        .force('center', d3.forceCenter(cObj.width/2, cObj.height/2))
+
+      sim.on('tick', ()=> {
+        cCxt.clearRect(0, 0, cObj.width, cObj.height);
+
+        links.forEach((link) => {
+          cCxt.beginPath();
+
+          cCxt.moveTo(link.source.x, link.source.y);
+          cCxt.lineTo(link.target.x, link.target.y);
+
+          cCxt.strokeStyle = '#999';
+
+          cCxt.stroke();
+        })
+
+        nodes.forEach((node)=> {
+          cCxt.beginPath();
+
+          cCxt.arc(node.x, node.y, 3, 0, Math.PI*2, true);
+          cCxt.strokeStyle = 'black';
+          cCxt.fill();
+
+          cCxt.font = '宋体 20px';
+          cCxt.fillText(node.name, node.x, node.y)
+        });
+      });
+    }
+  </script>
+  <body>
+    <canvas id="c1" width="800" height="600"></canvas>
+  </body>
+  <!-- 
+    d3.forceSimulation()
+    .nodes(nodes)
+    .force('link', d3.forceLink().id().distance())
+    .force('charge', d3.forceManyBody())
+    .force('center', d3.forceCenter())
+
+
+    let cvs = document.getElementById('id')
+    cTxt = cvs.getContext('2d')
+    cTxt.clearRect(0, 0, cvs.width, cvs.height)
+
+    links.forEach
+
+    线条
+    cTxt.beginPath()
+    cTxt.lineTo(link.source.x, link.source.y)
+    cTxt.moveTo(linl.tatget.x, link.tatget.y)
+    cTxt.strokeStyle = '#999'
+    cTxt.stroke();
+
+    圆
+    cTxt.beginPath()
+    cTxt.arc(node.x, node.y, 0, Math.PI*2, true)
+    cTxt.strokeTyle = 'black'
+    cTxt.fill()
+
+    文字
+    cTxt.font = '宋体 20px'
+    cTxt.fontText(node.name, node.x, node.y)
+   -->
+</html>

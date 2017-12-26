@@ -1,0 +1,44 @@
+<!-- 大背景上显示一条鱼，且为不动状态 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>catch fish demo1</title>
+  <style>
+    body{
+      background-color: black;
+      text-align: center;
+    }
+    #fishBg{
+      background: url('img/game_bg_2_hd.jpg') no-repeat;
+    }
+  </style>
+  <script src="js/common.js"></script>
+  <script type="text/javascript">
+    window.onload = function () {
+      let cvs = document.getElementById('fishBg');
+      let ctxt = cvs.getContext('2d');
+
+      loadImgs({
+        fish1: 'img/fish1.png',
+        fish2: 'img/fish2.png',
+        fish3: 'img/fish3.png'
+      }, function(images) {
+        let w = 55, h = 37, x = 200, y = 150;
+        ctxt.save();
+        ctxt.translate(x+w/2, y+h/2)
+        ctxt.rotate(d2a(0))
+        ctxt.drawImage(
+          images.fish1,
+          0, 0, w, h,
+          -w/2, -h/2, w, h
+        );
+        ctxt.restore();
+      })
+    }
+  </script>
+</head>
+<body>
+  <canvas id="fishBg" width="800" height="600"></canvas>
+</body>
+</html>

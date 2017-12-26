@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="d3.js"></script>
+  <style>
+    
+  </style>
+  <script type="text/javascript">
+    window.onload = function () {
+      let oC = document.getElementById('c1')
+      let gd = oC.getContext('2d')
+      let nodes = [
+        {name: 'n1'},
+        {name: 'n2'},
+        {name: 'n3'}
+      ];
+      let links = [
+        {source: 'n1', target: 'n2', value: 300},
+        {source: 'n2', target: 'n3', value: 400},
+        {source: 'n3', target: 'n1', value: 150}
+      ];
+      let sim = d3.forceSimulation()
+        .nodes(nodes)
+        .force('link', d3.forceLink(links).id(item=>item.name).distance(item=>item.value))
+        .force('charge', d3.forceManyBody())
+        .force('center', d3.forceCenter(oC.width/2, oC.height/2))
+      sim.on('tick', () => {
+        gd.clearRect(0, 0, oC.width, oC.height);
+
+        links.forEach(link => {
+          gd.beginPath();
+
+          gd.moveTo(link.source.x, link.source.y);
+          gd.lineTo(link.target.x, link.target.y);
+
+          //strokeStyle 用 = 赋值 
+          gd.strokeStyle = '#999';
+
+          gd.stroke();
+        });
+
+        nodes.forEach(node => {
+          gd.beginPath();
+
+          gd.arc(node.x, node.y, 3, 0, Math.PI*2, true);
+
+          gd.fill()
+
+          gd.fillText(node.name, node.x, node.y);
+        });
+      });
+    }
+  </script>
+</head>
+<body>
+  <canvas id="c1" width="800" height="600"></canvas>
+</body>
+</html>
