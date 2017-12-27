@@ -1,6 +1,7 @@
 let http =  require('http');
 let queryString = require('queryString');
 let url = require('url');
+let common = require('./libs/common')
 
 let server = http.createServer((req, res) => {
   // Get请求
@@ -13,8 +14,9 @@ let server = http.createServer((req, res) => {
     aBuffer.push(data);
   });
   req.on('end', () => {
-    let data = Buffer.concat(aBuffer);
-    const post =  queryString.parse(data.toString())
+    let data = Buffer.concat(aBuffer)
+
+    console.log(data.toString())
   })
 })
 server.listen(8080)

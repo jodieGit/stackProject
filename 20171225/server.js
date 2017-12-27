@@ -1,22 +1,28 @@
-const url = require('url');
-const querystring = require('querystring');
-const http = require('http');
+const http=require('http');
+const url=require('url');
+const querystring=require('querystring')
 
-let server = http.createServer((req, res) => {
-  // Get数据
-  let {pathname, query} = url.parse(req.url, true)
+let server=http.createServer((req, res)=>{
+  //GET数据
+  let {pathname, query}=url.parse(req.url, true);
 
-  console.log('接受到了GET数据：', pathname, query);
+  console.log('接收到了GET数据：', pathname, query);
 
-  // Post 数据
-  let aBuffer = [];
-  req.on('data', data => {
-    aBuffer.push(data)
+  //POST数据
+  let aBuffer=[];
+  req.on('data', data=>{
+    aBuffer.push(data);
   });
-  req.on('end', () => {
-    const post=querystring.parse(data.toString());
-    
+  req.on('end', ()=>{
+    let data=Buffer.concat(aBuffer);
+
+    //urlencoded
+    console.log(data.toString())
+
+    const post = querystring.parse(data.toString())
     console.log('POST数据：', post);
-  })
+
+    //formdata
+  });
 });
-server.listen(8080)
+server.listen(8080);
